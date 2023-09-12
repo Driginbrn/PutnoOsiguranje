@@ -68,15 +68,39 @@
     if ($result->num_rows > 0) {
 
       echo "<table class=\"table table-hover table-bordered\" style=\" width: 1000px; margin-left: auto; margin-right: auto; \"";
-      echo "<tr> <th>Nosilac osiguranja</th> <th>Datum rođenja</th> <th>Broj pasosa</th> <th>Telefon</th> <th>Email</th> <th>Datum putovanja od</th> <th>Datum putovanja do</th> <th>Vrsta polise</th> </tr>";
+      echo "<tr> <th>Nosilac osiguranja</th> <th>Datum rođenja</th> <th>Broj pasosa</th> <th>Telefon</th> <th>Email</th> <th>Datum putovanja od</th> <th>Datum putovanja do</th> <th>Broj dana</th> <th>Vrsta polise</th> <th>Akcija</th> </tr>";
 
       while ($row = $result->fetch_assoc()) {
 
+        // Format datuma
         $originalDatum = $row['datum_rodjenja'];
         $noviDatum = date("d.m.Y", strtotime($originalDatum));
+        
+        // Broj dana
+        $datum_putovanja_od = $row['datum_putovanja_od'];
+        $datum_putovanja_do = $row['datum_putovanja_do'];
 
-        echo "<tr> <td>" . $row["nosilac_osiguranja"] . "</td> <td>" . $noviDatum . "</td> <td>" . $row["broj_pasosa"] . "</td> <td>" . $row["telefon"] . "</td> <td>" . $row["email"] . "</td> 
-        <td>" . $row["datum_putovanja_od"] . "</td> <td>" . $row["datum_putovanja_do"] . "</td> <td>" . $row["vrsta_polise"] . "</td> </tr>";
+        $vremenskiZig1 = strtotime($datum_putovanja_od);
+        $vremenskiZig2 = strtotime($datum_putovanja_do);
+
+        $razlikaSekunde = abs($vremenskiZig2 - $vremenskiZig1);
+
+        $brojDana = floor($razlikaSekunde / (60 * 60 * 24));
+
+        $grupno = "grupno";
+        
+
+        echo "<tr> <form action=\"osiguranja.php\" method=\"post\"> <td>" . $row["nosilac_osiguranja"] . "</td> <td>" . $noviDatum . "</td> <td>" . $row["broj_pasosa"] . "</td> <td>" . $row["telefon"] . "</td> <td>" . $row["email"] . "</td> 
+        <td>" . $row["datum_putovanja_od"] . "</td> <td>" . $row["datum_putovanja_do"] . "</td> <td>" . $brojDana . "</td><td>" . $row["vrsta_polise"] . "</td> </form> ";
+
+        if($row["vrsta_polise"] == $grupno){
+          echo " <td> <input type=\"hidden\" name=\"broj_pasosa\" value=" . $row["broj_pasosa"] . "> <button type=\"submit\" class=\"btn btn-outline-primary btn-sm\" name=\"pregled_dodatno\">Pregled</button> </td>";
+        }
+        else{
+          echo " <td> <input type=\"hidden\" name=\"broj_pasosa\" value=" . $row["broj_pasosa"] . "> <button type=\"submit\" class=\"btn btn-outline-primary btn-sm\" name=\"pregled_dodatno\" disabled>Pregled</button> </td>";
+        }
+
+        echo "</tr>";
         }
 
         echo "</table>";
@@ -84,6 +108,39 @@
           echo "<p class=\"h5\">Nema rezultata.</p><br>";
         }
     }
+
+    
+    // Akcija dodatni osiguranici
+    if (isset($_POST['pregled_dodatno'])){
+
+      $broj_pasosa = $_POST['broj_pasosa'];
+
+      $sql = "SELECT * FROM osiguranje WHERE broj_pasosa = '$broj_pasosa'";
+
+  $result = $conn->query($sql);
+
+  if ($result->num_rows > 0) {
+
+    echo "<table class=\"table table-hover table-bordered\" style=\" width: 1000px; margin-left: auto; margin-right: auto; \"";
+    echo "<tr> <th>Nosilac osiguranja</th> <th>Datum rođenja</th> <th>Broj pasosa</th> </tr>";
+
+    while ($row = $result->fetch_assoc()) {
+
+      // Format datuma
+      $originalDatum = $row['datum_rodjenja'];
+      $noviDatum = date("d.m.Y", strtotime($originalDatum));
+      
+
+      echo "<tr> <td>" . $row["nosilac_osiguranja"] . "</td> <td>" . $noviDatum . "</td> <td>" . $row["broj_pasosa"] . "</td> </tr> ";
+
+      }
+
+      echo "</table>";
+      } else {
+        echo "<p class=\"h5\">Nema rezultata.</p><br>";
+      }
+  }
+    
 
     
 
