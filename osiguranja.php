@@ -91,7 +91,7 @@
         
 
         echo "<tr> <form action=\"osiguranja.php\" method=\"post\"> <td>" . $row["nosilac_osiguranja"] . "</td> <td>" . $noviDatum . "</td> <td>" . $row["broj_pasosa"] . "</td> <td>" . $row["telefon"] . "</td> <td>" . $row["email"] . "</td> 
-        <td>" . $row["datum_putovanja_od"] . "</td> <td>" . $row["datum_putovanja_do"] . "</td> <td>" . $brojDana . "</td><td>" . $row["vrsta_polise"] . "</td> </form> ";
+        <td>" . $row["datum_putovanja_od"] . "</td> <td>" . $row["datum_putovanja_do"] . "</td> <td>" . $brojDana . "</td> <td>" . $row["vrsta_polise"] . "</td>";
 
         if($row["vrsta_polise"] == $grupno){
           echo " <td> <input type=\"hidden\" name=\"broj_pasosa\" value=" . $row["broj_pasosa"] . "> <button type=\"submit\" class=\"btn btn-outline-primary btn-sm\" name=\"pregled_dodatno\">Pregled</button> </td>";
@@ -99,8 +99,7 @@
         else{
           echo " <td> <input type=\"hidden\" name=\"broj_pasosa\" value=" . $row["broj_pasosa"] . "> <button type=\"submit\" class=\"btn btn-outline-primary btn-sm\" name=\"pregled_dodatno\" disabled>Pregled</button> </td>";
         }
-
-        echo "</tr>";
+        echo "</form> </tr>";
         }
 
         echo "</table>";
@@ -115,7 +114,7 @@
 
       $broj_pasosa = $_POST['broj_pasosa'];
 
-      $sql = "SELECT * FROM osiguranje WHERE broj_pasosa = '$broj_pasosa'";
+      $sql = "SELECT * FROM dodatni_osiguranik join osiguranje on glavni_osiguranik_id = broj_pasosa WHERE broj_pasosa = '$broj_pasosa'";
 
   $result = $conn->query($sql);
 
@@ -127,11 +126,11 @@
     while ($row = $result->fetch_assoc()) {
 
       // Format datuma
-      $originalDatum = $row['datum_rodjenja'];
+      $originalDatum = $row['d_datum_rodjenja'];
       $noviDatum = date("d.m.Y", strtotime($originalDatum));
       
 
-      echo "<tr> <td>" . $row["nosilac_osiguranja"] . "</td> <td>" . $noviDatum . "</td> <td>" . $row["broj_pasosa"] . "</td> </tr> ";
+      echo "<tr> <td>" . $row["d_nosilac_osiguranja"] . "</td> <td>" . $noviDatum . "</td> <td>" . $row["d_broj_pasosa"] . "</td> </tr> ";
 
       }
 
