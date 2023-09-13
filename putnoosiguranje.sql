@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 12, 2023 at 11:35 PM
+-- Generation Time: Sep 13, 2023 at 08:19 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.1
 
@@ -39,7 +39,7 @@ CREATE TABLE `dodatni_osiguranik` (
 --
 
 INSERT INTO `dodatni_osiguranik` (`d_nosilac_osiguranja`, `d_datum_rodjenja`, `d_broj_pasosa`, `glavni_osiguranik_id`) VALUES
-('Kety', '2023-09-02', 111, 222);
+('Andjela Avramovic', '2002-08-13', 2888, 8888);
 
 -- --------------------------------------------------------
 
@@ -50,8 +50,8 @@ INSERT INTO `dodatni_osiguranik` (`d_nosilac_osiguranja`, `d_datum_rodjenja`, `d
 CREATE TABLE `osiguranje` (
   `nosilac_osiguranja` varchar(50) NOT NULL,
   `datum_rodjenja` date NOT NULL,
-  `broj_pasosa` int(11) NOT NULL,
-  `telefon` int(11) DEFAULT NULL,
+  `broj_pasosa` int(20) NOT NULL,
+  `telefon` int(10) DEFAULT NULL,
   `email` varchar(30) NOT NULL,
   `datum_putovanja_od` date NOT NULL,
   `datum_putovanja_do` date NOT NULL,
@@ -63,8 +63,8 @@ CREATE TABLE `osiguranje` (
 --
 
 INSERT INTO `osiguranje` (`nosilac_osiguranja`, `datum_rodjenja`, `broj_pasosa`, `telefon`, `email`, `datum_putovanja_od`, `datum_putovanja_do`, `vrsta_polise`) VALUES
-('Viktor', '2023-09-01', 222, 0, 'viktor@gmail.com', '2023-09-12', '2023-09-30', 'grupno'),
-('Milos Talic', '2000-04-15', 806, 601234567, 'misatalic@gmail.com', '2023-09-12', '2023-09-30', 'individualno');
+('Viktor', '2000-12-15', 4444, 0, 'viktor@gmail.com', '2023-09-01', '2023-09-30', 'individualno'),
+('Milos Talic', '2000-04-15', 8888, 601234567, 'misatalic@gmail.com', '2023-09-12', '2023-09-30', 'grupno');
 
 --
 -- Indexes for dumped tables
