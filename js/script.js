@@ -23,13 +23,14 @@ function dodajOsiguranika() {
     const osiguraniciDiv = document.getElementById('osiguranici');
     const noviOsiguranikDiv = document.createElement('div');
 
-    noviOsiguranikDiv.innerHTML = `
+    noviOsiguranikDiv.innerHTML = `<div id="divZaBrisanje">
         <hr>
         <p class="h3">Dodatni osiguranik</p>
         <!-- Ime i prezime -->
             <div class="mb-3">
                 <label for="nosilac_osiguranja" class="form-label">Ime i prezime</label>*
                 <input type="text" class="form-control" name="d_nosilac_osiguranja" required>
+                <div class="error" id="d_nosilac_osiguranja_error" style="color: red;"></div>
             </div>
 
             <!-- Datum rodjenja -->
@@ -42,11 +43,26 @@ function dodajOsiguranika() {
             <div class="mb-3">
                 <label for="broj_pasosa" class="form-label">Broj pasoša</label>*
                 <input type="tel" class="form-control" name="d_broj_pasosa" required>
+                <div class="error" id="d_broj_pasosa" style="color: red;"></div>
             </div>
-        <br><br><br>
+
+            <!-- Button za brisanje -->
+            <div class="mb-3">
+                <button type="button" class="btn btn-outline-danger btn-sm" id="btnObrisiDiv" onclick="obrisiDiv()" >Obrisi dodatnog osiguranika</button>
+            </div>
+            <br><br><br>
+        </div>
     `;
 
     osiguraniciDiv.appendChild(noviOsiguranikDiv);
+}
+
+// Brisanje dodatnog osiguranika
+function obrisiDiv() {
+    var divZaBrisanje = document.getElementById('divZaBrisanje');
+    if (divZaBrisanje) {
+        divZaBrisanje.parentNode.removeChild(divZaBrisanje);
+    }
 }
 
 // Prvo dobijemo referencu na radio dugme i dugme koje želimo da omogućimo
@@ -72,3 +88,4 @@ if (invidualnoRadio.checked) {
     dodajBtn.setAttribute('disabled', true);
     potvrdiBtn.setAttribute('name', "dodaj");
 }});
+
