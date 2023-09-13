@@ -45,7 +45,7 @@
     if ($result->num_rows > 0) {
 
       echo "<table class=\"table table-hover table-bordered\" style=\" width: 1500px; margin-left: auto; margin-right: auto; \"";
-      echo "<tr> <th>Nosilac osiguranja</th> <th>Datum rođenja</th> <th>Broj pasosa</th> <th>Telefon</th> <th>Email</th> <th>Datum putovanja od</th> <th>Datum putovanja do</th> <th>Broj dana</th> <th>Vrsta polise</th> <th>Akcija</th> </tr>";
+      echo "<tr> <th>Nosilac osiguranja</th> <th>Datum rođenja</th> <th>Broj pasoša</th> <th>Telefon</th> <th>Email</th> <th>Datum putovanja od</th> <th>Datum putovanja do</th> <th>Broj dana</th> <th>Vrsta polise</th> <th>Akcija</th> </tr>";
 
       while ($row = $result->fetch_assoc()) {
 
@@ -115,7 +115,7 @@
 
     echo "<br> <h2 class=\"display-6\">Pregled dodatnih osiguranika</h2><br>";
     echo "<table class=\"table table-hover table-bordered\" style=\" width: 600px; margin-left: auto; margin-right: auto; \"";
-    echo "<tr> <th>Nosilac osiguranja</th> <th>Datum rođenja</th> <th>Broj pasosa</th> </tr>";
+    echo "<tr> <th>Nosilac osiguranja</th> <th>Datum rođenja</th> <th>Broj pasoša</th> </tr>";
 
     while ($row = $result->fetch_assoc()) {
 
