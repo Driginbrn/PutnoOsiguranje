@@ -131,68 +131,117 @@ $mysqli = new mysqli("localhost", "root", "", "putnoosiguranje");
 
 // Dodaj novo osiguranje
 if (isset($_POST['dodaj'])) {
-    if ((!$_POST['nosilac_osiguranja']) || (!$_POST['datum_rodjenja']) || (!$_POST['broj_pasosa']) || (!$_POST['email']) || (!$_POST['datum_putovanja_od']) || (!$_POST['datum_putovanja_do']) || (!$_POST['vrsta_polise'])) {
-    echo "Morate popuniti sva polja!<br>";
-} else {
-    $nosilac_osiguranja = $_POST['nosilac_osiguranja'];
-    $datum_rodjenja = $_POST['datum_rodjenja'];
-    $broj_pasosa = $_POST['broj_pasosa'];
-    $telefon = $_POST['telefon'];
-    $email = $_POST['email'];
-    $datum_putovanja_od = $_POST['datum_putovanja_od'];
-    $datum_putovanja_do = $_POST['datum_putovanja_do'];
-    $vrsta_polise = $_POST['vrsta_polise'];
+    if (
+        (!$_POST['nosilac_osiguranja']) || 
+        (!$_POST['datum_rodjenja']) || 
+        (!$_POST['broj_pasosa']) || 
+        (!$_POST['email']) || 
+        (!$_POST['datum_putovanja_od']) || 
+        (!$_POST['datum_putovanja_do']) || 
+        (!$_POST['vrsta_polise'])
+    ) {
+        echo "Morate popuniti sva polja!<br>";
+    } else {
+        $nosilac_osiguranja = $_POST['nosilac_osiguranja'];
+        $datum_rodjenja = $_POST['datum_rodjenja'];
+        $broj_pasosa = $_POST['broj_pasosa'];
+        $telefon = $_POST['telefon'];
+        $email = $_POST['email'];
+        $datum_putovanja_od = $_POST['datum_putovanja_od'];
+        $datum_putovanja_do = $_POST['datum_putovanja_do'];
+        $vrsta_polise = $_POST['vrsta_polise'];
 
-    $sql_dodaj = "INSERT INTO osiguranje (nosilac_osiguranja, datum_rodjenja, broj_pasosa, telefon, email, datum_putovanja_od, datum_putovanja_do, vrsta_polise)";
-    $sql_dodaj .= "VALUES ('$nosilac_osiguranja', '$datum_rodjenja', '$broj_pasosa', '$telefon', '$email', '$datum_putovanja_od', '$datum_putovanja_do', '$vrsta_polise')";
-    $res_dodaj = $mysqli->query($sql_dodaj);
+        // Provera da li broj pasoša već postoji u bazi
+        $sql_provera = "SELECT * FROM osiguranje WHERE broj_pasosa = '$broj_pasosa'";
+        $res_provera = $mysqli->query($sql_provera);
 
-    if (!$res_dodaj) {
-        echo "Greska pri izvrsavanju upita dodavanja!";
-        die($mysqli->error);
+        if ($res_provera->num_rows > 0) {
+            // Ako broj pasoša već postoji, postavite tekst unutar postojećeg div-a
+            echo '<script>document.getElementById("broj_pasosa_error").textContent = "Broj pasoša već postoji!";</script>';
+        } else {
+            // Ako broj pasoša ne postoji, možete izvršiti dodavanje u bazu kao što ste to već uradili
+            $sql_dodaj = "INSERT INTO osiguranje (nosilac_osiguranja, datum_rodjenja, broj_pasosa, telefon, email, datum_putovanja_od, datum_putovanja_do, vrsta_polise)";
+            $sql_dodaj .= "VALUES ('$nosilac_osiguranja', '$datum_rodjenja', '$broj_pasosa', '$telefon', '$email', '$datum_putovanja_od', '$datum_putovanja_do', '$vrsta_polise')";
+            $res_dodaj = $mysqli->query($sql_dodaj);
+
+            if (!$res_dodaj) {
+                echo "Greska pri izvrsavanju upita dodavanja!";
+                die($mysqli->error);
+            }
+            echo "<p class=\"h5\">Osiguranje je uspešno dodato!</p><br>";
+        }
     }
-    echo "<p class=\"h5\">Osiguranje je uspešno dodato!</p><br>";
-}
 }
 
 // Dodaj novo grupno osiguranje
 if (isset($_POST['dodaj_dodatno'])) {
-    if ((!$_POST['nosilac_osiguranja']) || (!$_POST['datum_rodjenja']) || (!$_POST['broj_pasosa']) || (!$_POST['email']) || 
-    (!$_POST['datum_putovanja_od']) || (!$_POST['datum_putovanja_do']) || (!$_POST['vrsta_polise']) || (!$_POST['d_nosilac_osiguranja']) || (!$_POST['d_datum_rodjenja']) || (!$_POST['d_broj_pasosa']) ) {
-    echo "Morate popuniti sva polja!<br>";
-} else {
-    $nosilac_osiguranja = $_POST['nosilac_osiguranja'];
-    $datum_rodjenja = $_POST['datum_rodjenja'];
-    $broj_pasosa = $_POST['broj_pasosa'];
-    $telefon = $_POST['telefon'];
-    $email = $_POST['email'];
-    $datum_putovanja_od = $_POST['datum_putovanja_od'];
-    $datum_putovanja_do = $_POST['datum_putovanja_do'];
-    $vrsta_polise = $_POST['vrsta_polise'];
+    if (
+        (!$_POST['nosilac_osiguranja']) ||
+        (!$_POST['datum_rodjenja']) ||
+        (!$_POST['broj_pasosa']) ||
+        (!$_POST['email']) ||
+        (!$_POST['datum_putovanja_od']) ||
+        (!$_POST['datum_putovanja_do']) ||
+        (!$_POST['vrsta_polise']) ||
+        (!$_POST['d_nosilac_osiguranja']) ||
+        (!$_POST['d_datum_rodjenja']) ||
+        (!$_POST['d_broj_pasosa'])
+    ) {
+        echo "Morate popuniti sva polja!<br>";
+    } else {
+        $nosilac_osiguranja = $_POST['nosilac_osiguranja'];
+        $datum_rodjenja = $_POST['datum_rodjenja'];
+        $broj_pasosa = $_POST['broj_pasosa'];
+        $telefon = $_POST['telefon'];
+        $email = $_POST['email'];
+        $datum_putovanja_od = $_POST['datum_putovanja_od'];
+        $datum_putovanja_do = $_POST['datum_putovanja_do'];
+        $vrsta_polise = $_POST['vrsta_polise'];
 
-    $d_nosilac_osiguranja = $_POST['d_nosilac_osiguranja'];
-    $d_datum_rodjenja = $_POST['d_datum_rodjenja'];
-    $d_broj_pasosa = $_POST['d_broj_pasosa'];
+        $d_nosilac_osiguranja = $_POST['d_nosilac_osiguranja'];
+        $d_datum_rodjenja = $_POST['d_datum_rodjenja'];
+        $d_broj_pasosa = $_POST['d_broj_pasosa'];
 
-    $sql_dodaj = "INSERT INTO osiguranje (nosilac_osiguranja, datum_rodjenja, broj_pasosa, telefon, email, datum_putovanja_od, datum_putovanja_do, vrsta_polise)";
-    $sql_dodaj .= "VALUES ('$nosilac_osiguranja', '$datum_rodjenja', '$broj_pasosa', '$telefon', '$email', '$datum_putovanja_od', '$datum_putovanja_do', '$vrsta_polise')";
-    $res_dodaj = $mysqli->query($sql_dodaj);
+        // Provera za broj pasoša
+        $sql_provera = "SELECT * FROM osiguranje WHERE broj_pasosa = '$broj_pasosa'";
+        $res_provera = $mysqli->query($sql_provera);
 
-    if (!$res_dodaj) {
-        echo "Greska pri izvrsavanju upita dodavanja!";
-        die($mysqli->error);
-    }
+        if ($res_provera->num_rows > 0) {
+            echo "<script>
+                var brojPasosaError = document.getElementById('broj_pasosa_error');
+                if (brojPasosaError) {
+                    brojPasosaError.innerHTML = 'Broj pasoša već postoji.';
+                }
+            </script>";
+        } else {
+            // Provera za d_broj_pasosa
+            $sql_provera_d = "SELECT * FROM dodatni_osiguranik WHERE d_broj_pasosa = '$d_broj_pasosa'";
+            $res_provera_d = $mysqli->query($sql_provera_d);
 
-    $sql_dodaj_dodatno = "INSERT INTO dodatni_osiguranik (d_nosilac_osiguranja, d_datum_rodjenja, d_broj_pasosa, glavni_osiguranik_id)";
-    $sql_dodaj_dodatno .= "VALUES ('$d_nosilac_osiguranja', '$d_datum_rodjenja', '$d_broj_pasosa', '$broj_pasosa')";
-    $res_dodaj_dodatno = $mysqli->query($sql_dodaj_dodatno);
+            if ($res_provera_d->num_rows > 0) {
+                echo "<div class=\"error\" style=\"color: red;\">Broj pasosa za dodatnog osiguranika već postoji.</div>";
+            } else {
+                $sql_dodaj = "INSERT INTO osiguranje (nosilac_osiguranja, datum_rodjenja, broj_pasosa, telefon, email, datum_putovanja_od, datum_putovanja_do, vrsta_polise)";
+                $sql_dodaj .= "VALUES ('$nosilac_osiguranja', '$datum_rodjenja', '$broj_pasosa', '$telefon', '$email', '$datum_putovanja_od', '$datum_putovanja_do', '$vrsta_polise')";
+                $res_dodaj = $mysqli->query($sql_dodaj);
 
-    if (!$res_dodaj) {
-        echo "Greska pri izvrsavanju upita dodavanja!";
-        die($mysqli->error);
-    }
+                if (!$res_dodaj) {
+                    echo "Greska pri izvrsavanju upita dodavanja!";
+                    die($mysqli->error);
+                }
 
-    echo "<p class=\"h5\">Grupno osiguranje je uspešno dodato!</p><br>";
+                $sql_dodaj_dodatno = "INSERT INTO dodatni_osiguranik (d_nosilac_osiguranja, d_datum_rodjenja, d_broj_pasosa, glavni_osiguranik_id)";
+                $sql_dodaj_dodatno .= "VALUES ('$d_nosilac_osiguranja', '$d_datum_rodjenja', '$d_broj_pasosa', '$broj_pasosa')";
+                $res_dodaj_dodatno = $mysqli->query($sql_dodaj_dodatno);
+
+                if (!$res_dodaj_dodatno) {
+                    echo "Greska pri izvrsavanju upita dodavanja!";
+                    die($mysqli->error);
+                }
+
+                echo "<p class=\"h5\">Grupno osiguranje je uspešno dodato!</p><br>";
+            }
+        }
     }
 }
 

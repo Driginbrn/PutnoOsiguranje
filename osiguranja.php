@@ -133,9 +133,6 @@
         echo "<p class=\"h5\">Nema rezultata.</p><br>";
       }
   }
-    
-
-    
 
 ?>
 
